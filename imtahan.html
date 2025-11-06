@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Educentr | İmtahan Nəticələri</title>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #198754, #0f5132);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #333;
+  margin: 0;
+}
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+}
+h2 {
+  color: #198754;
+  margin-bottom: 10px;
+}
+input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #198754;
+  border-radius: 5px;
+  outline: none;
+  text-align: center;
+  font-size: 16px;
+}
+button {
+  background: #198754;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+button:hover {
+  background: #146c43;
+}
+table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+th {
+  background-color: #198754;
+  color: white;
+}
+.result-box {
+  margin-top: 20px;
+}
+footer {
+  margin-top: 25px;
+  color: #999;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <h2>Educentr Təhsil Mərkəzi</h2>
+    <p>İmtahan nəticələrini görmək üçün ID nömrəni daxil et:</p>
+    <input type="text" id="searchId" placeholder="Məs: 12345">
+    <button onclick="searchResult()">Axtar</button>
+
+    <div class="result-box" id="resultBox"></div>
+
+    <footer>© 2025 Educentr Təhsil Mərkəzi</footer>
+  </div>
+
+<script>
+async function searchResult() {
+  const id = document.getElementById("searchId").value.trim();
+  const resultBox = document.getElementById("resultBox");
+  resultBox.innerHTML = "🔍 Yüklənir...";
+
+  try {
+    const response = await fetch("data.json?" + new Date().getTime());
+    const data = await response.json();
+    const found = data.find(item => item.id === id);
+
+    if (found) {
+      resultBox.innerHTML = `
+        <table>
+          <tr><th>Ad</th><td>${found.ad}</td></tr>
+          <tr><th>Soyad</th><td>${found.soyad}</td></tr>
+          <tr><th>Sinif</th><td>${found.sinif}</td></tr>
+          <tr><th>Bölmə</th><td>${found.bolme}</td></tr>
+          <tr><th>İmtahan</th><td>${found.imtahan}</td></tr>
+          <tr><th>Düz</th><td>${found.duz}</td></tr>
+          <tr><th>Səhv</th><td>${found.seh}</td></tr>
+          <tr><th>Boş</th><td>${found.bos}</td></tr>
+          <tr><th>Tarix</th><td>${found.tarix}</td></tr>
+        </table>
+      `;
+    } else {
+      resultBox.innerHTML = "❌ Bu ID nömrəsi üzrə nəticə tapılmadı.";
+    }
+  } catch (e) {
+    resultBox.innerHTML = "⚠ Xəta baş verdi. Zəhmət olmasa yenidən yoxla.";
+  }
+}
+</script>
+</body>
+</html>

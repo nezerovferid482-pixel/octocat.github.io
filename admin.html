@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<title>Educentr Admin Panel</title>
+<style>
+body {
+  font-family: Arial; background: #198754; color: white;
+  display: flex; justify-content: center; align-items: center;
+  height: 100vh;
+}
+.box { background: white; color: black; padding: 20px; border-radius: 10px; width: 400px; }
+input { width: 100%; margin: 5px 0; padding: 8px; }
+button { background: #198754; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; }
+button:hover { background: #157347; }
+</style>
+</head>
+<body>
+  <div class="box">
+    <h2>Educentr Admin Panel</h2>
+    <input id="id" placeholder="ID">
+    <input id="ad" placeholder="Ad">
+    <input id="soyad" placeholder="Soyad">
+    <input id="sinif" placeholder="Sinif">
+    <input id="bolme" placeholder="Bölmə">
+    <input id="imtahan" placeholder="İmtahan növü">
+    <input id="duz" placeholder="Düz">
+    <input id="seh" placeholder="Səhv">
+    <input id="bos" placeholder="Boş">
+    <button onclick="addResult()">Əlavə Et</button>
+    <p id="msg"></p>
+  </div>
+
+<script>
+const TOKEN = "BURAYA_SƏNİN_TOKENİNİ_YAZ";
+const USER = "feridnezerov"; // GitHub istifadəçi adın
+const REPO = "educentr-results"; // repo adı
+
+async function addResult() {
+  const newData = {
+    id: id.value.trim(),
+    ad: ad.value.trim(),
+    soyad: soyad.value.trim(),
+    sinif: sinif.value.trim(),
+    bolme: bolme.value.trim(),
+    imtahan: imtahan.value.trim(),
+    duz: duz.value.trim(),
+    seh: seh.value.trim(),
+    bos: bos.value.trim(),
+    tarix: new Date().toLocaleDateString("az-AZ")
+  };
+
+  // Əvvəlcə köhnə data.json-u oxuyuruq
+  const res = await fetch(https://api.github.com/repos/${USER}/${REPO}/contents/data.json);
+  const file = await res.json();
+  const content = JSON.parse(atob(file.content));
+  content.push(newData);
+
+  const updatedContent = btoa(JSON.stringify(content, null, 2));
+
+  // Yenilənmiş JSON-u GitHub-a yükləyirik
+  await fetch(https://api.github.com/repos/${USER}/${REPO}/contents/data.json, {
+    method: "PUT",
+    headers: {
+      "Authorization": token ${TOKEN},
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: "Yeni nəticə əlavə edildi",
+      content: updatedContent,
+      sha: file.sha
+    })
+  });
+
+  document.getElementById("msg").innerHTML = "✅ Nəticə uğurla əlavə olundu!";
+}
+</script>
+</body>
+</html>

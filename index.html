@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<title>Educentr - Admin Panel</title>
+<style>
+body {
+  background: linear-gradient(135deg, #0a9f4c, #028a30);
+  font-family: Arial, sans-serif;
+  display: flex; justify-content: center; align-items: center;
+  height: 100vh; color: #fff;
+}
+.box {
+  background: #fff; color: #000; padding: 30px; border-radius: 15px;
+  width: 400px; text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+input {
+  width: 100%; padding: 10px; margin: 6px 0;
+  border: 1px solid #ccc; border-radius: 5px;
+}
+button {
+  background: #028a30; color: #fff; padding: 10px 15px;
+  border: none; border-radius: 5px; cursor: pointer;
+  width: 100%; font-size: 16px;
+}
+button:hover { background: #06b342; }
+</style>
+</head>
+<body>
+  <div class="box">
+    <h2>Educentr - Admin Panel</h2>
+    <input id="id" placeholder="ID">
+    <input id="ad" placeholder="Ad">
+    <input id="soyad" placeholder="Soyad">
+    <input id="sinif" placeholder="Sinif">
+    <input id="bolme" placeholder="Bölmə">
+    <input id="imtahan" placeholder="İmtahan növü">
+    <input id="fenn" placeholder="Fənn">
+    <input id="duz" placeholder="Düz">
+    <input id="sehv" placeholder="Səhv">
+    <input id="bos" placeholder="Boş">
+    <button onclick="saveData()">Əlavə Et</button>
+    <p id="msg"></p>
+  </div>
+
+<script>
+function saveData() {
+  const data = {
+    id: document.getElementById("id").value,
+    ad: document.getElementById("ad").value,
+    soyad: document.getElementById("soyad").value,
+    sinif: document.getElementById("sinif").value,
+    bolme: document.getElementById("bolme").value,
+    imtahan: document.getElementById("imtahan").value,
+    fenn: document.getElementById("fenn").value,
+    duz: document.getElementById("duz").value,
+    sehv: document.getElementById("sehv").value,
+    bos: document.getElementById("bos").value,
+  };
+
+  let all = JSON.parse(localStorage.getItem("imtahanlar")) || [];
+  all.push(data);
+  localStorage.setItem("imtahanlar", JSON.stringify(all));
+
+  document.getElementById("msg").innerHTML = "✅ Uğurla əlavə olundu!";
+  document.querySelectorAll("input").forEach(i => i.value = "");
+}
+</script>
+</body>
+</html>
